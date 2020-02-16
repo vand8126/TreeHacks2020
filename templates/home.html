@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}
+    Home
+{% endblock %}
+{% block content %}
+    <div class = "homepage">
+        <h2>How Was Your Day?</h2>
+        <textarea name="paragraph_text" id="myText" cols="50" rows="10"></textarea>
+    </div> 
+    
+    <div class = "text-button"> 
+        <button onclick="myFunction()">Activate</button>
+    </div> 
+    
+    <p id="demo"></p>
+</div>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myText").value;
+            var xhttp = new XMLHttpRequest();
+            // + "?QUERYPARAMNAME=" + encodeURIComponent(x);
+            //   if (this.readyState == 4 && this.status == 200)
+            xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Typical action to be performed when the document is ready:
+                console.log(responseText);
+            };
+            xhttp.open("GET", "https://openb00k.azurewebsites.net", true);
+            xhttp.send();
+        }
+        
+        </script>
+{% endblock %}

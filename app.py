@@ -5,21 +5,77 @@ endpoint = "https://openbooknlp.cognitiveservices.azure.com/"
 # from azure.ai.textanalytics import single_detect_language
 # from azure.ai.textanalytics import single_recognize_entities
 
+from flask import Flask
+from datetime import datetime
+from flask import render_template
+import re
+from bs4 import BeautifulSoup 
+import requests as req
+
 from azure.ai.textanalytics import TextAnalyticsClient, TextAnalyticsApiKeyCredential
 text_analytics_client = TextAnalyticsClient(endpoint=endpoint, credential=TextAnalyticsApiKeyCredential(key))
+
+from urllib.request import urlopen as uReq
+
+
+app = Flask(__name__)
+def getText():
+    print("test")
+    my_url="http://127.0.0.1:8080"
+   
+    uClient = uReq(my_url)
+    page_html = uClient.read()
+    soup = BeautifulSoup(page_html, 'html.parser')
+
+    # html parsing
+    
+ 
+
+    text=soup
+    print(text)
+    print("df","james")
+    return text
+
+@app.route("/hello/")
+@app.route("/hello/<name>")
+def hello_there(name = None):
+    print("start")
+    return render_template(
+        "hello_there.html",
+        name=name,
+        date=datetime.now()
+    )
+
+@app.route("/api/data")
+def get_data():
+    print("data")
+    return app.send_static_file("data.json")
+
+# Replace the existing home function with the one below
+@app.route("/")
+def home():
+    print("homey1")
+    
+    return render_template("home.html")
+
+# New functions
+@app.route("/about/")
+def about():
+    getText()
+    return render_template("about.html")
+
+@app.route("/contact/")
+def contact():
+    return render_template("contact.html")
 
 def detect_language():
         # [START batch_detect_language]
         documents = [
-            "This document is written in English.",
-            "Este es un document escrito en Español.",
-            "这是一个用中文写的文件",
-            "Dies ist ein Dokument in englischer Sprache.",
-            "Detta är ett dokument skrivet på engelska."
+            getText()
         ]
 
         result = text_analytics_client.detect_language(documents)
-
+        print("pin")
         for idx, doc in enumerate(result):
             if not doc.is_error:
                 print("Document text: {}".format(documents[idx]))
@@ -33,11 +89,9 @@ def detect_language():
 def extract_key_phrases():
         # [START batch_extract_key_phrases]
         documents = [
-            "Redmond is a city in King County, Washington, United States, located 15 miles east of Seattle.",
-            "I need to take my cat to the veterinarian.",
-            "I will travel to South America in the summer.",
+           getText()
         ]
-
+        print("ex")
         result = text_analytics_client.extract_key_phrases(documents)
         for doc in result:
             if not doc.is_error:
@@ -49,12 +103,9 @@ def extract_key_phrases():
 def analyze_sentiment():
         # [START batch_analyze_sentiment]
         documents = [
-            "I had the best day of my life.",
-            "This was a waste of my time. The speaker put me to sleep.",
-            "No tengo dinero ni nada que dar...",
-            "L'hôtel n'était pas très confortable. L'éclairage était trop sombre."
+            getText()
         ]
-
+        print("din")
         result = text_analytics_client.analyze_sentiment(documents)
         docs = [doc for doc in result if not doc.is_error]
 
@@ -132,36 +183,5 @@ def analyze_sentiment():
 #         print("Encountered exception. {}".format(err))
 # entity_recognition_example(endpoint, key)
 
-from flask import Flask
-from datetime import datetime
-from flask import render_template
-import re
-
-app = Flask(__name__)
-
-@app.route("/hello/")
-@app.route("/hello/<name>")
-def hello_there(name = None):
-    return render_template(
-        "hello_there.html",
-        name=name,
-        date=datetime.now()
-    )
-
-@app.route("/api/data")
-def get_data():
-    return app.send_static_file("data.json")
-
-# Replace the existing home function with the one below
-@app.route("/")
-def home():
-    return render_template("home.html")
-
-# New functions
-@app.route("/about/")
-def about():
-    return render_template("about.html")
-
-@app.route("/contact/")
-def contact():
-    return render_template("contact.html")
+if __name__ == '__main__':
+    app.run('127.0.0.1', port=8080, debug=True)
