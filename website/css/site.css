@@ -26,6 +26,11 @@
     margin-left: 30px;
 }
 
+.text-button{
+    font-size: 1.3em;
+    color: #03f068;
+}
+
 .body-content {
     padding: 5px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
