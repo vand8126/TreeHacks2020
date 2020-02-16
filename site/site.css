@@ -1,34 +1,48 @@
 .message {
     font-weight: 600;
-    color: blue;
+    color: black;
 }
 
 .navbar {
-    background-color: lightslategray;
+    background-color: #0084FF;
     font-size: 1em;
+    text-align: center;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    color: #0084ff;
-    padding: 8px 5px 8px 5px;
+    color: black;
+    padding: 8px 8px 8px 8px;
 }
 
 .navbar a {
     text-decoration: none;
-    color: inherit;
+    color: black;
 }
 
 .navbar-brand {
     font-size: 1.2em;
     font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    margin-left: 60px;
 }
 
 .navbar-item {
     font-variant: small-caps;
-    margin-left: 30px;
+    margin-left: 50px;
 }
 
-.text-button{
-    font-size: 1.3em;
-    color: #03f068;
+.homepage{
+    text-align: center;
+    /* display: inline-block; */
+
+}
+
+.txt-but{
+    background-color: #03f068;
+    color: white;
+    padding: 15px 30px; 
+    /* text-align: right; */
+    /* margin: right; */
+    vertical-align:middle;
 }
 
 .body-content {
