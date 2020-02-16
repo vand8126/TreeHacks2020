@@ -10,6 +10,7 @@
     
     <div class = "text-button"> 
         <button onclick="myFunction()">Analyze</button>
+
     </div> 
     
     <p id="demo"></p>
@@ -18,22 +19,28 @@
     <script>
         function myFunction() {
             var x = document.getElementById("myText").value;
-            var params = "myText"+16
-            var xhttp = new XMLHttpRequest();
+            // var params = "myText"+16
+            var url = "http://127.0.0.1:8080/new"
 
-                console.log(xhttp.responseText)
+            var queryParams = "?Param="+x
+
+            window.location.href = url + queryParams
+
+            // var goodbye = window.location.href
+            // var xhttp = new XMLHttpRequest();
+            //     console.log(xhttp.responseText)
             
-            return encodeURIComponent(x);
-            // + "?QUERYPARAMNAME=" + encodeURIComponent(x);
-            //   if (this.readyState == 4 && this.status == 200)
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                // Typical action to be performed when the document is ready:
-                    console.log(responseText);
-                };
-            xhttp.open("GET", "https://openb00k.azurewebsites.net", true);
-            xhttp.send();
-            };
+            // return goodbye = encodeURIComponent(x);
+            // // + "?QUERYPARAMNAME=" + encodeURIComponent(x);
+            // //   if (this.readyState == 4 && this.status == 200)
+            // xhttp.onreadystatechange = function() {
+            //     if (this.readyState == 4 && this.status == 200) {
+            //     // Typical action to be performed when the document is ready:
+            //         console.log(responseText);
+            //     };
+            // xhttp.open("GET", "http://127.0.0.1:8080/", true);
+            // xhttp.send();
+            // };
     };
         </script>
 {% endblock %}

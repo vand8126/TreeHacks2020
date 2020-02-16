@@ -7,69 +7,73 @@ endpoint = "https://openbooknlp.cognitiveservices.azure.com/"
 
 from azure.ai.textanalytics import TextAnalyticsClient, TextAnalyticsApiKeyCredential
 text_analytics_client = TextAnalyticsClient(endpoint=endpoint, credential=TextAnalyticsApiKeyCredential(key))
-
-def detect_language():
+ 
+def detect_language(documents):
         # [START batch_detect_language]
-        documents = [
-            "This document is written in English."
-        ]
+        
 
         result = text_analytics_client.detect_language(documents)
-
+        text = []
         for idx, doc in enumerate(result):
             if not doc.is_error:
-                print("Document text: {}".format(documents[idx]))
-                print("Language detected: {}".format(doc.primary_language.name))
-                print("ISO6391 name: {}".format(doc.primary_language.iso6391_name))
-                print("Confidence score: {}\n".format(doc.primary_language.score))
+                text.append("Document text: {}".format(documents[idx]))
+                
+                text.append("Language detected: {}".format(doc.primary_language.name))
+                text.append("ISO6391 name: {}".format(doc.primary_language.iso6391_name))
+                text.append("Confidence score: {}\n".format(doc.primary_language.score))
             if doc.is_error:
-                print(doc.id, doc.error)
+                text.append(doc.id)
+                text.append(doc.error)
+        return "<br>".join(text)
         # [END batch_detect_language]
 
-def extract_key_phrases():
+def extract_key_phrases(documents):
         # [START batch_extract_key_phrases]
-        documents = [
-            "Redmond is a city in King County, Washington, United States, located 15 miles east of Seattle.",
-            "I need to take my cat to the veterinarian.",
-            "I will travel to South America in the summer.",
-        ]
-
+        
+        text = []
         result = text_analytics_client.extract_key_phrases(documents)
         for doc in result:
             if not doc.is_error:
-                print(doc.key_phrases)
-            if doc.is_error:
-                print(doc.id, doc.error)
+                text.append("<br>".join(doc.key_phrases))
+            elif doc.is_error:
+                text.append(doc.id)
+                # text.append(doc.error) 
+
+        return "<br>".join(text)
         # [END batch_extract_key_phrases]
 
-def analyze_sentiment():
+def analyze_sentiment(documents):
         # [START batch_analyze_sentiment]
-        documents = [
-            "I had the best day of my life."
-        ]
+        
+        
 
         result = text_analytics_client.analyze_sentiment(documents)
+        print(result)
         docs = [doc for doc in result if not doc.is_error]
 
+        text = []
+
         for idx, doc in enumerate(docs):
-            print("Document text: {}".format(documents[idx]))
-            print("Overall sentiment: {}".format(doc.sentiment))
+            text.append("Document text: {}".format(documents[idx]))
+            text.append("Overall sentiment: {}".format(doc.sentiment))
         # [END batch_analyze_sentiment]
-            print("Overall scores: positive={0:.3f}; neutral={1:.3f}; negative={2:.3f} \n".format(
+            text.append("Overall scores: positive={0:.3f}; neutral={1:.3f}; negative={2:.3f} \n".format(
                 doc.sentiment_scores.positive,
                 doc.sentiment_scores.neutral,
                 doc.sentiment_scores.negative,
             ))
             for idx, sentence in enumerate(doc.sentences):
-                print("Sentence {} sentiment: {}".format(idx+1, sentence.sentiment))
-                print("Sentence score: positive={0:.3f}; neutral={1:.3f}; negative={2:.3f}".format(
+                text.append("Sentence {} sentiment: {}".format(idx+1, sentence.sentiment))
+                text.append("Sentence score: positive={0:.3f}; neutral={1:.3f}; negative={2:.3f}".format(
                     sentence.sentiment_scores.positive,
                     sentence.sentiment_scores.neutral,
                     sentence.sentiment_scores.negative,
                 ))
-                print("Offset: {}".format(sentence.offset))
-                print("Length: {}\n".format(sentence.length))
-            print("------------------------------------")
+                text.append("Offset: {}".format(sentence.offset))
+                text.append("Length: {}\n".format(sentence.length))
+            text.append("------------------------------------")
+
+        return "<br>".join(text)
 
 # def sentiment_analysis_example(endpoint, key):
 
@@ -124,9 +128,10 @@ def analyze_sentiment():
 #         print("Encountered exception. {}".format(err))
 # entity_recognition_example(endpoint, key)
 
+
 from flask import Flask
 from datetime import datetime
-from flask import render_template
+from flask import render_template, request
 import re
 
 app = Flask(__name__)
@@ -148,6 +153,17 @@ def get_data():
 @app.route("/")
 def home():
     return render_template("home.html")
+@app.route("/new")
+def new():
+    journal = request.args.get('Param')
+    documents=list(journal)
+    return   analyze_sentiment(documents) + extract_key_phrases(documents) #+ detect_language(documents)
+
+    # extract_key_phrases(documents)
+    # analyze_sentiment(documents)
+    # detect_language(documents)
+    # print (journal)
+    
 
 # New functions
 @app.route("/about/")
