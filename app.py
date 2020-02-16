@@ -156,7 +156,9 @@ def home():
 @app.route("/new")
 def new():
     journal = request.args.get('Param')
-    documents=list(journal)
+    print (journal)
+    documents=[journal]
+    print (documents)
     return   analyze_sentiment(documents) + extract_key_phrases(documents) #+ detect_language(documents)
 
     # extract_key_phrases(documents)
