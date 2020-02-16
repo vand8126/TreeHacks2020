@@ -11,7 +11,6 @@ text_analytics_client = TextAnalyticsClient(endpoint=endpoint, credential=TextAn
 def detect_language(documents):
         # [START batch_detect_language]
         
-
         result = text_analytics_client.detect_language(documents)
         text = []
         for idx, doc in enumerate(result):
@@ -44,8 +43,6 @@ def extract_key_phrases(documents):
 
 def analyze_sentiment(documents):
         # [START batch_analyze_sentiment]
-        
-        
 
         result = text_analytics_client.analyze_sentiment(documents)
         print(result)
@@ -133,6 +130,7 @@ from flask import Flask
 from datetime import datetime
 from flask import render_template, request
 import re
+import logging
 
 app = Flask(__name__)
 
@@ -156,12 +154,20 @@ def home():
 @app.route("/new")
 def new():
     journal = request.args.get('Param')
-    print (journal)
+    logging.warn("Received request")
+    # print (journal)
     documents=[journal]
-    print (documents)
-    return   analyze_sentiment(documents) + extract_key_phrases(documents) #+ detect_language(documents)
+    # print (documents)
+    logging.warn("Analyzing sentiment")
+    sentiment = analyze_sentiment(documents)
 
-    # extract_key_phrases(documents)
+    logging.warn("Extracting key phrases")
+    phrases = extract_key_phrases(documents)
+
+    logging.warn("Returning result")
+    return sentiment + phrases #+ detect_language(documents)
+
+    # return extract_key_phrases(documents)
     # analyze_sentiment(documents)
     # detect_language(documents)
     # print (journal)
@@ -177,4 +183,6 @@ def contact():
     return render_template("contact.html")
 
 if __name__ == '__main__':
+    FORMAT = '%(asctime)-15s: %(message)s'
+    logging.basicConfig(format=FORMAT)
     app.run('127.0.0.1', port=8080, debug=True)

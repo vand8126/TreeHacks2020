@@ -1,0 +1,51 @@
+.message {
+    font-weight: 600;
+    color: black;
+}
+
+.navbar {
+    background-color: #0084FF;
+    font-size: 1em;
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: black;
+    padding: 8px 8px 8px 8px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: black;
+}
+
+.navbar-brand {
+    font-size: 1.2em;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    margin-left: 60px;
+}
+
+.navbar-item {
+    font-variant: small-caps;
+    margin-left: 50px;
+}
+
+.homepage{
+    text-align: center;
+    /* display: inline-block; */
+
+}
+
+.txt-but{
+    background-color: #03f068;
+    color: white;
+    padding: 15px 30px; 
+    /* text-align: right; */
+    /* margin: right; */
+    vertical-align:middle;
+}
+
+.body-content {
+    padding: 5px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
